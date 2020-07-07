@@ -1,0 +1,24 @@
+{
+  "name": "cryptobot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniel1dolan/CryptoBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daniel1dolan/CryptoBot/issues"
+  },
+  "homepage": "https://github.com/daniel1dolan/CryptoBot#readme",
+  "dependencies": {
+    "coinbase-pro": "^0.9.0",
+    "dotenv": "^8.2.0"
+  }
+}
