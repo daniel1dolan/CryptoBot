@@ -1,6 +1,7 @@
 // Imports/reguires
 const program = require("commander");
 const Historical = require("./historical/index");
+const BackTester = require("./backtesting");
 require("dotenv").config();
 const CoinbasePro = require("coinbase-pro");
 const key = process.env.GDAX_KEY;
@@ -15,6 +16,8 @@ function toDate(val) {
   return new Date(val * 1e3);
 }
 
+// creates a command line program with certain flags that can be sent which changes
+// how the scripts run
 program
   .version("1.0.0")
   .option(
@@ -35,19 +38,32 @@ program
 const main = async function () {
   const { interval, product, start, end } = program;
 
+  const tester = new BackTester({
+    start,
+    end,
+    product,
+    interval,
+  });
+
+  // service will run a grab of historical data and plug in inputs from program or defaults
   const service = new Historical({
     start,
     end,
     product,
     interval,
   });
-  const data = await service.getData();
 
-  console.log(data);
+  console.log(tester);
+
+  await tester.start();
+
+  //   const data = await service.getData();
+
+  //   console.log(data);
 };
 
 main();
-
+////
 //Methods to buy and sell that needs client passed in and order details
 const { placeBuy, placeSell } = require("./trades/placeOrder");
 

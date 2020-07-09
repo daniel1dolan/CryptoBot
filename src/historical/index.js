@@ -1,6 +1,7 @@
 const CoinbasePro = require("coinbase-pro");
 const Candlestick = require("../models/candlestick");
 
+// timeOut is used to space out requests to GDAX due to public rate limits
 function timeOut(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -38,15 +39,9 @@ class HistoricalService {
       });
     });
     return candlesticks;
-
-    // console.log(filtered.length);
-    // const results = await this.client.getProductHistoricRates(this.product, {
-    //   start: this.start,
-    //   end: this.end,
-    //   granularity: this.interval,
-    // });
-    // return results;
   }
+  // Perform Intervals will call the interval data and concat their results.
+  // Recursive function
   async performIntervals(intervals) {
     if (intervals.length == 0) {
       return [];
@@ -55,7 +50,7 @@ class HistoricalService {
 
     const result = await this.performRequest(interval).then((r) => r.reverse());
 
-    await timeOut(1 / 3);
+    await timeOut(1000);
 
     const next = await this.performIntervals(intervals.slice(1));
     return result.concat(next);
@@ -68,6 +63,7 @@ class HistoricalService {
     });
     return results;
   }
+  // Create requests gets start and end times of intervals based on time interval given.
   createRequests() {
     const max = 300;
     const delta = (this.end.getTime() - this.start.getTime()) * 1e-3;
