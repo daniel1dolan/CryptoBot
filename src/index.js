@@ -72,14 +72,14 @@ const callback = (error, response, data) => {
 };
 
 // historical rates are: 5 minute windows
-async function historicalRates() {
-  const results = await publicClient.getProductHistoricRates("BTC-USD", {
-    granularity: 300,
-  });
-  // granularity of 300 is 5 minutes intervals or 5 * 60
-  console.log(results);
-  // [timeStamp, low, high, open, close, volume]
-}
+// [timeStamp, low, high, open, close, volume]
+// async function historicalRates() {
+//   const results = await publicClient.getProductHistoricRates("BTC-USD", {
+//     granularity: 300,
+//   });
+// granularity of 300 is 5 minutes intervals or 5 * 60
+//   console.log(results);
+// }
 // historicalRates();
 
 // placeSell(params, authenticatedClient);
