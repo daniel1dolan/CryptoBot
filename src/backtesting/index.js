@@ -2,6 +2,7 @@ const Candlestick = require("../models/candlestick");
 const Historical = require("../historical");
 const Simple = require("../strategies");
 const randomstring = require("randomstring");
+const colors = require("colors");
 
 class Backtester {
   constructor({ start, end, product, interval }) {
@@ -27,7 +28,7 @@ class Backtester {
           this.onSellSignal(x);
         },
       });
-      Promise.all(
+      await Promise.all(
         history.map(async (stick, index) => {
           const sticks = history.slice(0, index + 1);
           await this.strategy.run({
@@ -36,12 +37,23 @@ class Backtester {
           });
         })
       );
+      const positions = this.strategy.getPositions();
+      positions.forEach((p) => {
+        p.print();
+      });
+      const total = positions.reduce((r, p) => {
+        return r + p.profit();
+      }, 0);
+
+      const prof = `${total}`;
+      const colored = total > 0 ? colors.green(prof) : colors.red(prof);
+
+      console.log(`Total: ${colored}`);
     } catch (error) {
       console.log(error);
     }
   }
   async onBuySignal({ price, time }) {
-    console.log("BUY SIGNAL");
     const id = randomstring.generate(20);
     this.strategy.positionOpened({
       price,
@@ -51,7 +63,6 @@ class Backtester {
     });
   }
   async onSellSignal({ price, size, time, position }) {
-    console.log("SELL SIGNAL");
     this.strategy.positionClosed({
       price,
       time,

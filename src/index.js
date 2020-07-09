@@ -53,8 +53,6 @@ const main = async function () {
     interval,
   });
 
-  console.log(tester);
-
   await tester.start();
 
   //   const data = await service.getData();
