@@ -1,11 +1,11 @@
 const Candlestick = require("../models/candlestick");
 const Historical = require("../historical");
-const Simple = require("../strategies");
+const { Factory } = require("../strategies");
 const randomstring = require("randomstring");
 const colors = require("colors");
 
 class Backtester {
-  constructor({ start, end, product, interval }) {
+  constructor({ start, end, product, interval, strategyType }) {
     this.startTime = start;
     this.endTime = end;
     this.interval = interval;
@@ -16,11 +16,13 @@ class Backtester {
       product,
       interval,
     });
+    this.strategyType = strategyType;
   }
   async start() {
     try {
       const history = await this.historical.getData();
-      this.strategy = new Simple({
+      console.log(this.strategyType);
+      this.strategy = Factory.create(this.strategyType, {
         onBuySignal: (x) => {
           this.onBuySignal(x);
         },

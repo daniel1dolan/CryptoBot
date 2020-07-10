@@ -33,16 +33,18 @@ program
     yesterday
   )
   .option("-e, --end [end]", "End time in unix seconds", toDate, now)
+  .option("-t, --strategy [strategy]", "Strategy Type", "macd")
   .parse(process.argv);
 
 const main = async function () {
-  const { interval, product, start, end } = program;
+  const { interval, product, start, end, strategy } = program;
 
   const tester = new BackTester({
     start,
     end,
     product,
     interval,
+    strategyType: strategy,
   });
 
   // service will run a grab of historical data and plug in inputs from program or defaults
