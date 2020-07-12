@@ -10,9 +10,9 @@ class Position {
     this.exit = trade;
   }
   print() {
-    const enter = `Enter | ${this.enter.price} | ${this.enter.time}`;
+    const enter = `Enter | ${this.enter.price} * ${this.enter.size} | ${this.enter.time} |`;
     const exit = this.exit
-      ? `Exit | ${this.exit.price} | ${this.exit.time}`
+      ? `Exit | ${this.exit.price} * ${this.exit.size} | ${this.exit.time}`
       : "";
     var profit = "";
     if (this.state == "closed") {
@@ -24,9 +24,9 @@ class Position {
   }
   profit() {
     const fee = 0.0025;
-    const entrance = this.enter.price * (1 + fee);
+    const entrance = this.enter.price * this.enter.size * (1 + fee);
     if (this.exit) {
-      const exit = this.exit.price * (1 - fee);
+      const exit = this.exit.price * this.enter.size * (1 - fee);
       return exit - entrance;
     } else {
       return 0;

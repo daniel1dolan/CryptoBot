@@ -60,7 +60,7 @@ class Backtester {
     this.strategy.positionOpened({
       price,
       time,
-      size: 1.0,
+      size: 3.0,
       id,
     });
   }
