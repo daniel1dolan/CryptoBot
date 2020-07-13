@@ -2,6 +2,7 @@
 const program = require("commander");
 const Historical = require("./historical/index");
 const BackTester = require("./backtesting");
+const Ticker = require("./ticker");
 require("dotenv").config();
 const CoinbasePro = require("coinbase-pro");
 const key = process.env.GDAX_KEY;
@@ -48,12 +49,12 @@ const main = async function () {
   });
 
   // service will run a grab of historical data and plug in inputs from program or defaults
-  const service = new Historical({
-    start,
-    end,
-    product,
-    interval,
-  });
+  //   const service = new Historical({
+  //     start,
+  //     end,
+  //     product,
+  //     interval,
+  //   });
 
   await tester.start();
 
@@ -65,27 +66,27 @@ const main = async function () {
 main();
 ////
 //Methods to buy and sell that needs client passed in and order details
-const { placeBuy, placeSell } = require("./trades/placeOrder");
+// const { placeBuy, placeSell } = require("./trades/placeOrder");
 
-const accountIDs = {
-  BTC: "c09ae1db-40e9-46df-bf26-762f051f2bb5",
-  ETH: "bd641cbf-71c8-44ee-a79a-727a52c4d00c",
-};
+// const accountIDs = {
+//   BTC: "c09ae1db-40e9-46df-bf26-762f051f2bb5",
+//   ETH: "bd641cbf-71c8-44ee-a79a-727a52c4d00c",
+// };
 
-const authenticatedClient = new CoinbasePro.AuthenticatedClient(
-  key,
-  secret,
-  phrase,
-  sandboxURL
-);
-const publicClient = new CoinbasePro.PublicClient();
+// const authenticatedClient = new CoinbasePro.AuthenticatedClient(
+//   key,
+//   secret,
+//   phrase,
+//   sandboxURL
+// );
+// const publicClient = new CoinbasePro.PublicClient();
 
-const callback = (error, response, data) => {
-  if (error) {
-    return console.dir(error);
-  }
-  return console.dir(data);
-};
+// const callback = (error, response, data) => {
+//   if (error) {
+//     return console.dir(error);
+//   }
+//   return console.dir(data);
+// };
 
 // historical rates are: 5 minute windows
 // [timeStamp, low, high, open, close, volume]
