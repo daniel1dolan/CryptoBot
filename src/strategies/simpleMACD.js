@@ -44,11 +44,11 @@ class SimpleMACD extends Strategy {
     } else {
       open.forEach((p) => {
         if (isAbove && wasBelow) {
-          if (p.enter.price * 1.01 < price) {
+          if (p.enter.price * 1.02 <= price) {
             this.onSellSignal({ price, time, size: p.enter.size, position: p });
           }
         } else {
-          if (p.enter.price * 0.95 > price) {
+          if (p.enter.price * 0.99 >= price) {
             this.onSellSignal({ price, time, size: p.enter.size, position: p });
           }
         }

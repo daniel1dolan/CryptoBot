@@ -1,4 +1,4 @@
-// Imports/reguires
+// Imports/requires
 const program = require("commander");
 const Historical = require("./historical/index");
 const BackTester = require("./backtesting");
@@ -19,6 +19,7 @@ function toDate(val) {
 
 // creates a command line program with certain flags that can be sent which changes
 // how the scripts run
+// date '+%s' to get date in unix seconds
 program
   .version("1.0.0")
   .option(
@@ -39,6 +40,7 @@ program
 
 const main = async function () {
   const { interval, product, start, end, strategy } = program;
+  console.log(interval, product, start, end, strategy);
 
   const tester = new BackTester({
     start,
