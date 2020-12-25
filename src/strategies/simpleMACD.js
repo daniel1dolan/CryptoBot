@@ -49,19 +49,33 @@ class SimpleMACD extends Strategy {
     const priceAboveEMA = price > lastEMA;
 
     if (open.length === 0) {
-      if (signalBelowZero && priceAboveEMA && wasBelow && isAbove) {
+      const buySignal = signalBelowZero && priceAboveEMA && wasBelow && isAbove;
+      // Buying strategy logic.
+      if (buySignal) {
         this.onBuySignal({ price, time });
       }
     } else {
       open.forEach((p) => {
-        if (p.enter.price * 1.02 <= price) {
+        const metProfitGoal = p.enter.price * 1.02 <= price;
+        const metStopLoss = p.enter.price * 0.99 >= price;
+        const signOfDip = wasAbove && isBelow;
+        // Selling strategy logic.
+        // 1. Sell if price is up 2%.
+        if (metProfitGoal) {
+          console.log("normal sell", p.enter.price, price);
           this.onSellSignal({ price, time, size: p.enter.size, position: p });
-        } else if (wasAbove && isBelow) {
-          if (p.enter.price * 1.02 <= price) {
-            this.onSellSignal({ price, time, size: p.enter.size, position: p });
-          }
-        } else {
-          if (p.enter.price * 0.99 >= price) {
+        }
+        // 2. Sell if price was above and is now below, and gained 2%.
+        else if (signOfDip && metProfitGoal) {
+          console.log("was above and is now below", p.enter.price, price);
+          console.log("nested sell", p.enter.price, price);
+          this.onSellSignal({ price, time, size: p.enter.size, position: p });
+        }
+        // Stop loss logic.
+        // 1. Sell if price is down 1%.
+        else {
+          if (metStopLoss) {
+            console.log("stop loss", p.enter.price, price);
             this.onSellSignal({ price, time, size: p.enter.size, position: p });
           }
         }
